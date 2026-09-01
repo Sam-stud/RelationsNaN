@@ -22,7 +22,7 @@ namespace RelationsNaN.Controllers
         // GET: Games
         public async Task<IActionResult> Index()
         {
-            var relationsNaNContext = _context.Game.Include(g => g.Genre);
+            var relationsNaNContext = _context.Game.Include(g => g.Genre).Include(p => p.Platforms);
             return View(await relationsNaNContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace RelationsNaN.Controllers
 
             var game = await _context.Game
                 .Include(g => g.Genre)
+                .Include(p =>p.Platforms)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
@@ -77,7 +78,7 @@ namespace RelationsNaN.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Game.FindAsync(id);
+            var game = await _context.Game.Include(p => p.Platforms).FirstOrDefaultAsync(g => g.Id == id);
             if (game == null)
             {
                 return NotFound();
@@ -132,6 +133,7 @@ namespace RelationsNaN.Controllers
 
             var game = await _context.Game
                 .Include(g => g.Genre)
+                .Include(p => p.Platforms)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
