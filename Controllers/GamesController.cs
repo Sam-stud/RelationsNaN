@@ -122,7 +122,25 @@ namespace RelationsNaN.Controllers
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Name", game.GenreId);
             return View(game);
         }
-
+        [HttpPost]
+        public async Task<IActionResult> AddPlatform(int id, Platform platform)
+        {
+            if (id != platform.Id)
+            {
+                return NotFound();
+            }
+            var p = await _context.Platform.FirstOrDefaultAsync(p => p.Id == id);
+            if(p == null)
+            {
+                return NotFound();
+            }
+            return p;
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemovePlatform(int id, Platform platform)
+        {
+            return null;
+        }
         // GET: Games/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
